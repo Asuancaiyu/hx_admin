@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link rel="stylesheet" href="__LIB__zTree/css/metroStyle/metroStyle.css">
+    <link href="{$assets.css}" rel="stylesheet" />
+    <title>角色列表</title>
+</head>
+<body>
+<div class="page bt">
+    <div class="layui-card">
+        <!--<div class="layui-card-header layui-card-header-auto">
+            <button class="layui-btn" id="filterBtn" ><span>数据筛选</span> <i class="layui-icon layui-icon-down"></i></button>
+        </div>
+        <div id="searchCard" class="hide bb1">
+            <div class="layui-card-body">
+                <div class="">
+                    <form class="layui-form" action="" >
+
+                        <div class="form-item">
+                            <input type="text" name="username" placeholder="用户名" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="form-item">
+                            <input type="text" name="realname" placeholder="姓名" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="form-item">
+                            <input type="text" name="phone"  placeholder="手机号" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="form-item">
+                            <button class="layui-btn" id="subSearch" lay-submit lay-filter="formDemo">查 询</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                </div>
+            </div>
+        </div>-->
+        <div class="layui-card-body">
+            <div class="layui-btn-container" id="tabCtn" lay-ilter="tabCtn">
+                <table id="table1" lay-filter="table1"></table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="roleAddWindow" class="hide">
+
+    <div class="roleAddContainer">
+        <div id="closeRoleWindow" title="关闭新增窗口">
+            <i class="layui-icon layui-icon-close"></i>
+        </div>
+        <form  class="layui-form" action="" lay-filter="addRoleForm" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">角色说明</label>
+                <div class="layui-input-block">
+                    <textarea name="desc" style="resize:none;" placeholder="请对该角色进行说明" lay-verify="required" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">勾选权限<span></span></label>
+                <div class="layui-input-block" style="height: 163px">
+                    <div id="roleRightWindow" class="layui-tab layui-tab-card">
+                        <div id="rightWindowBtn" class="layui-layer-ico layui-layer-max"></div>
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">操作权限</li>
+                            <li >菜单权限</li>
+                        </ul>
+                        <div class="layui-tab-content" style="height: calc(100% - 61px);min-height: 100px;">
+                            <div class="layui-tab-item layui-show">
+                                <ul id="OTree" class="ztree" ></ul>
+                            </div>
+                            <div class="layui-tab-item">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" id="addSubmit" lay-submit  lay-filter="addSubmit">立即提交</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--头工具栏事件-->
+<script type="text/html" id="dataTool">
+    <div class="layui-inline" lay-event="add" title="新增角色"><i class="layui-icon layui-icon-add-1"></i></div>
+    <!--<div class="layui-inline" lay-event="update"><i class="layui-icon layui-icon-edit"></i></div>-->
+    <div class="layui-inline" lay-event="delete"  title="删除选中角色"><i class="layui-icon layui-icon-delete"></i></div>
+</script>
+<!--监听行工具事件-->
+<script type="text/html" id="barDemo">
+    <a class="cursor-pointer color-green mr10" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+    <a class="cursor-pointer color-green" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+</script>
+
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+<script src="__LIB__zTree/js/jquery.ztree.all.js"></script>
+
+<script>
+    var getListUrl='{:url("admin/api.Role/getRoleList")}';
+    var addPageUrl='{:url("admin/admin/role_add")}';
+    var deleteApi='{:url("admin/api.Role/deleteRole")}';
+    var editPageUrl='{:url("admin/admin/role_edit")}';
+    var getAuthList='{:url("admin/api.OperationAuth/getAuthList")}';
+    var addApi='{:url("admin/api.Role/addRole")}';
+    var queryAuthNameApi='{:url("admin/api.Role/queryAuthName")}';
+</script>
+<script src="{$assets.js}"></script>
+
+</body>
+</html>

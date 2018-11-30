@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link href="{$assets.css}" rel="stylesheet" />
+    <title>标签列表</title>
+</head>
+<body>
+
+<div class="page bt">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-btn-container" id="tabCtn" lay-ilter="tabCtn">
+                <table id="table1" lay-filter="table1"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加数据-->
+<div class="hide" id="addEditData" style="padding: 15px 15px 15px 0;">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label justify">组&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+            <div class="layui-input-block">
+                <input type="text" name="tag_name" class="layui-input" placeholder="请输入" maxlength="30" autocomplete="off" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label justify">说&nbsp;&nbsp;&nbsp;&nbsp;明</label>
+            <div class="layui-input-block">
+                <textarea name="description" id="" class="layui-textarea" placeholder="请说明"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="dataSubmit" lay-submit lay-filter="submit">立即提交</button>
+                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--头工具栏事件-->
+<script type="text/html" id="dataTool">
+    <div class="layui-inline" lay-event="add" title="新增用户"><i class="layui-icon layui-icon-add-1"></i></div>
+    <!--<div class="layui-inline" lay-event="update"><i class="layui-icon layui-icon-edit"></i></div>-->
+    <div class="layui-inline" lay-event="delete"  title="删除选中用户"><i class="layui-icon layui-icon-delete"></i></div>
+</script>
+<!--监听行工具事件-->
+<script type="text/html" id="barDemo">
+    <a class="cursor-pointer color-green mr10" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+    <a class="cursor-pointer color-green" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+</script>
+<!--模板-->
+<script type="text/html" id="statusTpl" >
+    <input type="checkbox" name="status" data-id="{{d.id}}" value="{{d.status}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="statusCheckbox" {{ d.status == 1 ? 'checked' : '' }}>
+</script>
+
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+
+<script>
+    var getMemberTagListUrl='{:url("admin/api.member/getMemberTagList")}';
+    var gaddMemberTagUrl='{:url("admin/api.member/addMemberTag")}';
+    var saveMemberTagUrl='{:url("admin/api.member/saveMemberTag")}';
+    var deleteMemberTagUrl='{:url("admin/api.member/deleteMemberTag")}';
+</script>
+<script src="{$assets.js}"></script>
+
+</body>
+</html>

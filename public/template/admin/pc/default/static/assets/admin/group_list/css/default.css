@@ -1,0 +1,57 @@
+html,body{
+    height: 100%;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    box-sizing: border-box;
+    margin: 15px;
+    height: calc(100% - 30px);
+}
+.hide{
+    display: none;
+}
+.page{
+    background: #fff;
+    height: 100%;
+}
+.layui-form .layui-icon{
+    box-sizing: content-box;
+}
+.layui-form-checkbox i {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 22px;
+    border: 1px solid #d2d2d2;
+    border-left: none;
+    border-radius: 0 2px 2px 0;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+}
+.layui-form-checkbox {
+    position: relative;
+    height: 24px;
+    line-height: 24px;
+    margin-right: 10px;
+    padding-right: 30px;
+    cursor: pointer;
+    font-size: 0;
+    -webkit-transition: .1s linear;
+    transition: .1s linear;
+    box-sizing: border-box;
+}
+/*.layui-form-checked span, .layui-form-checked:hover span {
+    background-color: #0fa99b;
+}
+.layui-form-checked i, .layui-form-checked:hover i {
+    color: #0fa99b;
+}*/
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #0fa99b;
+    background-color: #0fa99b;
+    color: #fff;
+}

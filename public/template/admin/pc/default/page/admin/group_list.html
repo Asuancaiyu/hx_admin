@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>操作权限</title>
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link rel="stylesheet" href="__LIB__zTree/css/metroStyle/metroStyle.css">
+    <link href="{$assets.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="page">
+    <div class="layui-card">
+
+        <div class="layui-card-body">
+            <ul id="menuTree" class="ztree" ></ul>
+        </div>
+    </div>
+
+</div>
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+<script src="__LIB__zTree/js/jquery.ztree.all.js"></script>
+<script  type="text/javascript">
+    var getDataList='{:url("admin/api.AdminGroup/getGroup")}';
+    var addData='{:url("admin/api.AdminGroup/addGroup")}';
+    var deleteData='{:url("admin/api.AdminGroup/deleteGroup")}';
+    var saveData='{:url("admin/api.AdminGroup/saveGroupInfo")}';
+    var getRoleListURl='{:url("admin/api.Role/getRoleList")}';
+    var getGroupBindRoleURL='{:url("admin/api.AdminGroup/getGroupBindRole")}';
+
+    layui.use(['element','form'],function(){
+        var form = layui.form;
+        //权限树形图
+        var setting = {
+            view: {
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            check: {
+                enable: false
+            },
+            data: {
+                simpleData: {
+                    isParent : "is_parent",
+                    idKey: 'id',
+                    pIdKey: 'pid',
+                    enable: true
+                }
+            },
+            callback: {
+                beforeEditName: zTreeBeforeEditName,
+                beforeRemove:zTreeBeforeRemove,
+                onCheck: onCheck,
+                onDrop:onDrop,
+            },
+            edit:{
+                showRemoveBtn: true,
+                showRenameBtn: true,
+                removeTitle: "删除节点",
+                renameTitle: "编辑",
+                drag:{
+                    isMove:false,//禁止移动节点
+                    isCopy: false,
+                },
+                enable:true,
+            },
+            /*async:{
+                url:'{:url("admin/api.OperationAuth/getAuthList")}',
+                autoParam:["id"],
+                otherParam:[],
+                dataType:'json',
+                dataFilter: filter,
+                enable:false,
+            }*/
+        };
+
+
+        var $menuRightObj=null;
+        $.ajax({
+            url:getDataList,
+
+            type:'get',
+            dataType:'json',
+            error:function (xhr) {
+                layer.msg(xhr.status,{icon:2});
+            },
+            success: function (data) {
+                if (data.code==0){
+                    var zNodes =data.data;
+                    if (!zNodes){
+                        layer.confirm('当前未创建组，是否创建？',{title:'提示'},function (e) {
+                            form.render();
+                            var zTree = $.fn.zTree.getZTreeObj(treeId);
+                            var x=$(window).offsetLeft;
+                            $('#addAuth').find('input[name="name"]').val('');
+                            $('#addAuth').find('input[name="url"]').val('');
+                            $layIndex1=layer.open({
+                                type: 1,
+                                title: '',
+                                area: ['404px', '384px'], //宽高
+                                content: $('#addAuth')
+                            });
+                            $('#addSubmit').unbind().on('click',function (e) {
+                                if (!roleListStatus){
+                                    getRoleList();
+                                }
+                                var name=$('#addAuth').find('input[name="name"]').val();
+                                var description=$('#addAuth').find('textarea[name="description"]').val();
+                                var roleArr=[];
+                                $('#addAuth').find('input[name^="role"]').each(function (index) {
+                                    if ($(this).is(':checked')){
+                                        roleArr.push($(this).val());
+                                    }
+                                });
+
+                                var pid=treeNode.id;
+                                $.ajax({
+                                    url:addData,
+                                    data: {name:name,description:description,pid:pid,roleId:roleArr},
+                                    type:'get',
+                                    dataType:'json',
+                                    error:function (xhr) {
+                                        layer.msg(xhr.status,{icon:2});
+                                    },
+                                    success: function (data) {
+                                        if (data.code==0){
+                                            zTree.addNodes(treeNode, {id:data.data.id, pId:pid, name:name});
+                                            layer.close($layIndex1);
+                                        }else{
+                                            layer.msg(data.msg,{icon:2});
+                                        }
+                                    }
+                                });
+                                return false;
+                            });
+
+                        });
+                    }
+                    $menuRightObj=$.fn.zTree.init($("#menuTree"), setting, zNodes);
+                }else{
+                    layer.msg(data.msg,{icon:2});
+                }
+            }
+        });
+        var roleListStatus=null;
+        getRoleList();
+        function getRoleList() {
+            $.ajax({
+                url:getRoleListURl,
+                type:'post',
+                dataType:'json',
+                error:function (xhr) {
+                    layer.msg('获取角色失败');
+                },
+                success:function (res) {
+                    if(res.code != 0){
+                        layer.msg('获取角色失败'+res.code);
+                    }else{
+                        $('#addRoleList').html('');
+                        var data=res.data;
+                        for(var i in data){
+                            var inputHtml='<input type="checkbox" name="role['+data[i].id+']" value="'+data[i].id+'" lay-skin="primary" title="'+data[i].role_name+'"><br>';
+                            $('#addRoleList').append(inputHtml);
+                            roleListStatus=true;
+                            form.render();
+                        }
+                    }
+                }
+            });
+        };
+
+        function onCheck(event,treeId,treeNode) {
+            var treeObj = $.fn.zTree.getZTreeObj(treeId);
+            var nodes = $menuRightObj.getCheckedNodes(true);
+        }
+        var newCount = 1;
+        function addHoverDom(treeId, treeNode) {
+            var sObj = $("#" + treeNode.tId + "_span");
+            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+                + "' title='新增' onfocus='this.blur();'></span>";
+            sObj.after(addStr);
+            var btn = $("#addBtn_"+treeNode.tId);
+
+            if (btn) btn.on("click", function(){
+                getRoleList();
+                form.render();
+                var zTree = $.fn.zTree.getZTreeObj(treeId);
+                var x=$(window).offsetLeft;
+                $('#addAuth').find('input[name="name"]').val('');
+                $('#addAuth').find('textarea[name="description"]').val('');
+                $layIndex1=layer.open({
+                    type: 1,
+                    title: '',
+                    area: ['404px', '384px'], //宽高
+                    content: $('#addAuth')
+                });
+                $('#addSubmit').unbind().on('click',function (e) {
+                    if (!roleListStatus){
+                        getRoleList();
+                    }
+                    var name=$('#addAuth').find('input[name="name"]').val();
+                    var description=$('#addAuth').find('textarea[name="description"]').val();
+                    var roleArr=[];
+                    $('#addAuth').find('input[name^="role"]').each(function (index) {
+                        if ($(this).is(':checked')){
+                            roleArr.push($(this).val());
+                        }
+                    });
+
+                    var pid=treeNode.id;
+                    $.ajax({
+                        url:addData,
+                        data: {name:name,description:description,pid:pid,roleId:roleArr},
+                        type:'get',
+                        dataType:'json',
+                        error:function (xhr) {
+                            layer.msg(xhr.status,{icon:2});
+                        },
+                        success: function (data) {
+                            if (data.code==0){
+                                zTree.addNodes(treeNode, {id:data.data.id, pId:pid, name:name,description:description});
+                                layer.close($layIndex1);
+                            }else{
+                                layer.msg(data.msg,{icon:2});
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+                return false;
+            });
+        };
+        //鼠标一开节点
+        function removeHoverDom(treeId, treeNode) {
+            $("#addBtn_"+treeNode.tId).unbind().remove();
+        };
+
+        //删除节点
+        function zTreeBeforeRemove(treeId, treeNode) {
+            if (!confirm('是否删除该组及子组？')){
+                return false;
+            }else{
+                var layIndex2=layer.msg('加载中', {
+                    icon: 16
+                    ,shade: 0.01
+                });
+                var status=false;
+                $.ajax({
+                    url:deleteData,
+                    data: {id:treeNode.id},
+                    type:'get',
+                    dataType:'json',
+                    async:false,//同步
+                    error:function (xhr) {
+                        layer.msg(xhr.status,{icon:2});
+                    },
+                    success: function (data) {
+                        if (data.code==0){
+                            status=true;
+                        }else{
+                            layer.msg(data.msg,{icon:2});
+                        }
+                    },
+                    complete:function () {
+                        layer.close(layIndex2);
+                    }
+                });
+                if (status){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        function getGroupBindRole(groupId) {
+            $.ajax({
+                url:getGroupBindRoleURL,
+                data:{gId:groupId},
+                type:'post',
+                dataType:'json',
+                error:function (xhr) {
+                    layer.msg('获取角色失败');
+                },
+                success:function (res) {
+                    if(res.code != 0){
+                        layer.msg('获取角色失败'+res.code);
+                    }else{
+                        $('#updateRoleList').html('');
+                        var data=res.data;
+                        for(var i in data){
+                            var checkStatus='';
+                            if (data[i].checked){
+                                checkStatus ='checked';
+                            }
+                            var inputHtml='<input type="checkbox" name="role['+data[i].role_id+']" value="'+data[i].role_id+'" lay-skin="primary" title="'+data[i].role_name+'" '+checkStatus+'><br>';
+                            $('#updateRoleList').append(inputHtml);
+                            roleListStatus=true;
+                            form.render();
+                        }
+                    }
+                }
+            });
+        }
+
+        //编辑节点
+        function zTreeBeforeEditName(treeId, treeNode) {
+            var id=treeNode.id;
+            getGroupBindRole(id);
+
+            $layIndex1=layer.open({
+                type: 1,
+                title: '',
+                area: ['404px', '384px'], //宽高
+                content: $('#editAuth')
+            });
+            var zTree = $.fn.zTree.getZTreeObj(treeId);
+            $('#editAuth').find('input[name="name"]').val(treeNode.name);
+            $('#editAuth').find('textarea[name="description"]').val(treeNode.description);
+            $('#editSubmit').unbind().on('click',function (e) {
+
+                var name=$('#editAuth').find('input[name="name"]').val();
+                var description=$('#editAuth').find('textarea[name="description"]').val();
+                var roleArr=[];
+                $('#editAuth').find('input[name^="role"]').each(function (index) {
+                    if ($(this).is(':checked')){
+                        roleArr.push($(this).val());
+                    }
+                });
+
+                $.ajax({
+                    url:saveData,
+                    data: {id:id,name:name,description:description,roleId:roleArr},
+                    type:'get',
+                    dataType:'json',
+                    error:function (xhr) {
+                        layer.msg(xhr.status,{icon:2});
+                    },
+                    success: function (data) {
+                        if (data.code!=0){
+                            layer.msg(data.msg,{icon:2});
+                        }else{
+                            treeNode.name=name;
+                            treeNode.description=description;
+                            zTree.updateNode(treeNode);
+                            //zTree.reAsyncChildNodes(null, 'refresh', false);
+                            layer.close($layIndex1);
+                        }
+                    }
+                });
+                return false;
+            });
+            return false;
+        };
+
+        function filter(treeId, parentNode, responseData) {
+            if (responseData) {
+                responseData=responseData.data;
+            }
+            return responseData;
+        }
+
+        function onDrop(event, treeId, treeNodes, targetNode, moveType) {
+
+        }
+    });
+
+</script>
+<div id="addAuth" class="hide">
+    <form class="layui-form" style="padding: 20px 15px 0 0;" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入组名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-inline" style="width: 298px;">
+                <textarea name="description" required="" lay-verify="required" lay-vertype="tips" placeholder="请对该组进行简要说明" autocomplete="off" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-inline" style="width: 298px;">
+                <div class="layui-card-body" id="addRoleList" style="width: 100%;overflow:auto;border: 1px solid  #e6e6e6;height: 100px;">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <button id="addSubmit" class="layui-btn" lay-submit="" lay-filter="addSubmit">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="editAuth" class="hide">
+    <form style="padding: 20px 15px 0 0;"  class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入组名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-inline" style="width: 298px;">
+                <textarea name="description" required="" lay-verify="required" lay-vertype="tips" placeholder="请对该组进行简要说明" autocomplete="off" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-inline" style="width: 298px;">
+                <div class="layui-card-body" id="updateRoleList" style="width: 100%;overflow:auto;border: 1px solid  #e6e6e6;height: 100px;">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <button id="editSubmit" class="layui-btn" lay-submit="" lay-filter="addSubmit">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

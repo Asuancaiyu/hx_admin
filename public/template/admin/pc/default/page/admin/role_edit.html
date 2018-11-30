@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>修改信息</title>
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link rel="stylesheet" href="__LIB__zTree/css/metroStyle/metroStyle.css">
+    <link href="{$assets.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="page">
+    <div class="info_container">
+        <form  class="layui-form" action="" lay-filter="addRoleForm" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">角色说明</label>
+                <div class="layui-input-block">
+                    <textarea name="desc" style="resize:none;" placeholder="请对该角色进行说明" lay-verify="required" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">勾选权限<span></span></label>
+                <div class="layui-input-block" style="height: 163px">
+                    <div id="roleRightWindow" class="layui-tab layui-tab-card">
+                        <div id="rightWindowBtn" class="layui-layer-ico layui-layer-max"></div>
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">操作权限</li>
+                            <li >菜单权限</li>
+                        </ul>
+                        <div class="layui-tab-content" style="height: calc(100% - 61px);min-height: 100px;">
+                            <div class="layui-tab-item layui-show">
+                                <ul id="OTree" class="ztree" ></ul>
+                            </div>
+                            <div class="layui-tab-item">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" id="saveSubmit" lay-submit  lay-filter="saveSubmit">立即保存</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+<script src="__LIB__zTree/js/jquery.ztree.all.js"></script>
+<script>
+    var id="{$_GET['id'] ?? 0}";
+    var getAuthListApi= '{:url("admin/api.Role/getRoleBindOperation")}';
+    var getRoleBaseInfoApi= '{:url("admin/api.Role/getRoleBaseInfo")}';
+    var saveRoleInfoApi= '{:url("admin/api.Role/saveRoleInfo")}';
+
+</script>
+<script src="{$assets.js}"></script>
+</body>
+</html>

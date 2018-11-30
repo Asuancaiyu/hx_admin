@@ -1,0 +1,69 @@
+body{
+    padding: 12px 12px 12px 0;
+}
+.info_container .layui-form-label{
+    text-align: justify;
+    height: 20px;
+    overflow: hidden;
+}
+.info_container .layui-form-label:after{
+    content: " ";
+    display: inline-block;
+    width: 100%;
+}
+.info_container .layui-tab-card{
+    box-shadow: none;
+}
+
+#roleRightWindow{
+    position: relative;
+    transition: all 0.2s;
+    height: 100%;
+}
+#roleRightWindow .layui-tab-title,
+#roleRightWindow .layui-tab-content{
+    transition: all 0.2s;
+}
+#roleRightWindow .layui-tab-content .layui-tab-item {
+    overflow-y: auto;
+    height: 100%;
+}
+#roleRightWindow .layui-layer-max {
+    background-position: -32px -40px;
+}
+#roleRightWindow .layui-layer-max:hover {
+    background-position: -16px -40px;
+}
+#roleRightWindow .layui-layer-maxmin {
+    background-position: -65px -40px;
+}
+#roleRightWindow .layui-layer-maxmin:hover {
+    background-position: -49px -40px;
+}
+#rightWindowBtn{
+    position: absolute;
+    right: 12px;
+    top: 15px;
+    height: 16px;
+    width: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.roleRightWindowMax{
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+    background: #fff;
+    z-index: 1;
+    margin-top: 0;
+}
+.info_container .layui-tab-card{
+    box-shadow: none;
+}

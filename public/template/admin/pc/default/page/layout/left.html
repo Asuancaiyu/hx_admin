@@ -1,0 +1,51 @@
+<!-- 侧边菜单 -->
+<div class="layui-side layui-side-menu">
+    <div class="layui-side-scroll">
+        <div class="layui-logo" lay-href="">
+            <span>神 木 药 业</span>
+        </div>
+        <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+            lay-filter="layadmin-system-side-menu">
+            <li class="layui-nav-item layui-this">
+                <a href="javascript:;" class="menu-item" data-href="{:url('admin/center/welcome')}" lay-direction="2"> <i class="layui-icon layui-icon-home"></i> <cite>主页</cite> </a>
+            </li>
+            <li class="layui-nav-item ">
+                <a href="javascript:;" lay-tips="用户管理" lay-direction="2"> <i class="layui-icon layui-icon-user"></i> <cite>用户管理</cite> <span class="layui-nav-more"></span></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/member/member_list')}"><cite>用户管理</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/member/group_list')}"><cite>用户组管理</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/member/tag_list')}"><cite>标签管理</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/member/member_delete_list')}"><cite>已删除用户</cite></a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:;" lay-tips="管理员" > <i class="layui-icon layui-icon-friends"></i> <cite>管理员</cite> <span class="layui-nav-more"></span></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/admin/admin_list')}"><cite>管理员管理</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/admin/group_list')}"><cite>用户组管理</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/admin/role_list')}"><cite>角色管理</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="{:url('admin/admin/auth')}"><cite>权限管理</cite></a></dd>
+                    <!--<dd class="">
+                        <a href="javascript:;" lay-tips="权限管理" data-href=""><cite>权限管理</cite><span class="layui-nav-more"></span></a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" lay-tips="操作权限" class="menu-item" data-href=""><cite>操作权限</cite> </a></dd>
+                            <dd><a href="javascript:;" lay-tips="菜单权限" class="menu-item" data-href=""><cite>菜单权限</cite> </a></dd>
+                        </dl>
+                    </dd>-->
+                </dl>
+            </li>
+            <li class="layui-nav-item ">
+                <a href="javascript:;" lay-tips="设置"> <i class="layui-icon layui-icon-set"> </i> <cite>设置</cite> <span class="layui-nav-more"></span></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" class="menu-item" data-href="/home/vendor_erp/buy_shops_list.html"><cite>网站设置</cite></a></dd>
+                    <dd><a href="javascript:;" class="menu-item" data-href="/home/vendor_erp/sell_shops_list.html"><cite>其他设置</cite></a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item">
+                <a href="javascript:;" class="menu-item" data-href="system/get" lay-direction="2"> <i class="layui-icon layui-icon-auz"></i> <cite>授权</cite> </a>
+            </li>
+            <span class="layui-nav-bar"></span>
+        </ul>
+    </div>
+</div>

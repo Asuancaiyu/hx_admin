@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加管理员</title>
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link rel="stylesheet" href="__LIB__zTree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="{$assets.css}">
+</head>
+<body>
+<div class="page">
+    <form class="layui-form" lay-filter="addForm"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">用 户 名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" placeholder="请输入" maxlength="30" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="pwd" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">确认密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="repwd" placeholder="再次输入密码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="realname" placeholder="管理员姓名" maxlength="15" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">手机号</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" placeholder="请输入" maxlength="11" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">组&角色</label>
+        <div class="layui-input-block" style="height: 163px">
+            <div id="roleRightWindow" class="layui-tab layui-tab-card">
+                <div id="rightWindowBtn" class="layui-layer-ico layui-layer-max"></div>
+                <ul class="layui-tab-title">
+                    <li class="layui-this">分组</li>
+                    <li >角色</li>
+                </ul>
+                <div class="layui-tab-content" style="height: calc(100% - 61px);min-height: 100px;">
+                    <div class="layui-tab-item layui-show">
+                        <ul id="groupTree" class="ztree" ></ul>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div id="addRole">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label justify">账号启用</label>
+        <div class="layui-input-block">
+            <input type="radio" name="status" value="1" title="启用" checked>
+            <input type="radio" name="status" value="0" title="禁用">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>
+</div>
+
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+<script src="__LIB__zTree/js/jquery.ztree.all.js"></script>
+<script>
+    var getGroupDataListURL='{:url("admin/api.AdminGroup/getGroup")}';
+    var getRoleListURl='{:url("admin/api.Role/getRoleList")}';
+    var addAdminURL="{:url('admin/api.Admin/addAdmin')}";
+</script>
+<script>
+    layui.use(['form','layer','element'], function(){
+        var form = layui.form;
+        var layer = layui.layer;
+
+
+        //对两次输入的密码进行验证
+        $('input[name="repwd"]').blur(function () {
+            if ($(this).val() != $('input[name="pwd"]').val()) {
+                layer.msg('两次密码输入不一致',{icon:2});
+            }
+        });
+        ini();
+        function ini() {
+            groupTree();
+            getRoleList();
+        }
+        var $groupTreeObj=null;//组树形图对象
+        //获取组，并生成树形图
+        function groupTree() {
+            var setting = {
+                view: {
+                    selectedMulti: false
+                },
+                check: {
+                    //chkboxType : { "Y" : "s", "N" : "s" },
+                    chkStyle: "radio",
+                    radioType: "all",
+                    enable: true
+                },
+                data: {
+                    simpleData: {
+                        isParent : "is_parent",
+                        idKey: 'id',
+                        pIdKey: 'pid',
+                        enable: true
+                    }
+                },
+                callback: {
+
+                },
+                edit:{
+
+                    enable:false,
+                },
+            };
+            $.ajax({
+                url:getGroupDataListURL,
+                type:'get',
+                dataType:'json',
+                error:function (xhr) {
+                    layer.msg(xhr.status,{icon:2});
+                },
+                success: function (data) {
+                    if (data.code==0){
+                        var zNodes =data.data;
+                        if (!zNodes){
+                            layer.alert('当前未创建组，请先前往‘用户组’创建',{title:'提示'});
+                        }
+                        $groupTreeObj=$.fn.zTree.init($("#groupTree"), setting, zNodes);
+                    }else{
+                        layer.msg(data.msg,{icon:2});
+                    }
+                }
+            });
+        }
+
+        //获取角色
+        function getRoleList() {
+            $.ajax({
+                url:getRoleListURl,
+                type:'post',
+                dataType:'json',
+                error:function (xhr) {
+                    layer.msg('获取角色失败');
+                },
+                success:function (res) {
+                    if(res.code != 0){
+                        layer.msg('获取角色失败'+res.code);
+                    }else{
+                        $('#addRole').html('');
+                        var data=res.data;
+                        for(var i in data){
+                            var inputHtml='<input type="checkbox" name="role['+data[i].id+']" value="'+data[i].id+'" lay-skin="primary" title="'+data[i].role_name+'"><br>';
+                            $('#addRole').append(inputHtml);
+                            form.render();
+                        }
+                    }
+                }
+            });
+        }
+
+        //选项卡最大化切换
+        $('#rightWindowBtn ').click(function () {
+            $(this).toggleClass('layui-layer-maxmin');
+            $('#roleRightWindow').toggleClass('roleRightWindowMax');
+        });
+
+        //提交表单
+        form.on('submit(addSubmit)', function(data){
+            var _this=$(this);
+            var dataObj={
+                group:[],
+                role:[],
+                username:data.field.username,
+                pwd:data.field.pwd,
+                repwd:data.field.pwd,
+                realname:data.field.realname,
+                phone:data.field.phone,
+                status:data.field.status,
+            };
+            var nE=/^[a-zA-Z0-9_-]{4,20}$/;
+            if (dataObj.username=='' || !nE.test(dataObj.username)){
+                layer.msg('请输入用户名，4~20个字符',{icon:2});
+                return false;
+            }
+            if (dataObj.pwd=='' || dataObj.pwd != dataObj.repwd){
+                layer.msg('两次密码输入不正确',{icon:2});
+                return false;
+            }
+            if (dataObj.pwd.length < 6){
+                layer.msg('密码长度不得小于6位',{icon:2});
+                return false;
+            }
+            var pE=/^1[3-9]\d{9}$/;
+            if (dataObj.phone=='' || !pE.test(dataObj.phone)){
+                layer.msg('请输入正确的手机号',{icon:2});
+                return false;
+            }
+
+            var groupTreeObj=$groupTreeObj.getCheckedNodes(true);
+            for (var i in groupTreeObj){
+                dataObj.group.push(groupTreeObj[i].id);
+            }
+            if (dataObj.group.length == 0){
+                layer.msg('请选择一个分组',{icon:2});
+                return false;
+            }
+            //获取已选择的角色
+            $('#addRole').find('input[name^="role"]').each(function (index) {
+                if ($(this).is(':checked')){
+                    dataObj.role.push(parseInt($(this).val()));
+                }
+            });
+            if (dataObj.role.length <= 0){
+                layer.msg('请选择角色',{icon:2});
+                return false;
+            }
+
+            var index=layer.msg('正在提交...', {
+                icon: 16
+                ,shade: 0.01
+            });
+            $.ajax({
+                url:addAdminURL,
+                data:dataObj,
+                type:'post',
+                dataType: 'json',
+                error:function (xhr) {
+                    layer.msg('超时'+xhr.status,{icon:2});
+                },
+                success:function (data) {
+                    if(data.code==0){
+                        layer.msg('完成',{icon:1});
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    }else{
+                        layer.msg(data.msg,{icon:2});
+                    }
+                },
+                complete:function () {
+                    layer.close(index);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

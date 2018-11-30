@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>操作权限</title>
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link rel="stylesheet" href="__LIB__zTree/css/metroStyle/metroStyle.css">
+    <link href="{$assets.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="page">
+    <ul id="menuTree" class="ztree" ></ul>
+</div>
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+<script src="__LIB__zTree/js/jquery.ztree.all.js"></script>
+<script  type="text/javascript">
+
+
+    layui.use(['element','form'],function(){
+        //权限树形图
+        var setting = {
+            view: {
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            check: {
+                enable: false
+            },
+            data: {
+                simpleData: {
+                    isParent : "is_parent",
+                    idKey: 'id',
+                    pIdKey: 'pid',
+                    enable: true
+                }
+            },
+            callback: {
+                beforeEditName: zTreeBeforeEditName,
+                beforeRemove:zTreeBeforeRemove,
+                onCheck: onCheck,
+                onDrop:onDrop,
+            },
+            edit:{
+                showRemoveBtn: true,
+                showRenameBtn: true,
+                removeTitle: "删除节点",
+                renameTitle: "编辑",
+                drag:{
+                    isMove:false,//禁止移动节点
+                    isCopy: false,
+                },
+                enable:true,
+            },
+            async:{
+                url:'{:url("admin/api.OperationAuth/getAuthList")}',
+                autoParam:["id"],
+                otherParam:[],
+                dataType:'json',
+                dataFilter: filter,
+                enable:false,
+            }
+        };
+
+
+        var $menuRightObj=null;
+        $.ajax({
+            url:'{:url("admin/api.OperationAuth/getAuthList")}',
+
+            type:'get',
+            dataType:'json',
+            error:function (xhr) {
+                layer.msg(xhr.status,{icon:2});
+            },
+            success: function (data) {
+                if (data.code==0){
+                    var zNodes =data.data;
+                    if (!zNodes){
+                        layer.confirm('当前未创建权限，是否创建？',{title:'提示'},function (e) {
+                            $('#addAuth').find('input[name="name"]').val('');
+                            $('#addAuth').find('input[name="url"]').val('');
+                            $layIndex3=layer.open({
+                                type: 1,
+                                title: '',
+                                area: ['304px', '184px'], //宽高
+                                content: $('#addAuth')
+                            });
+                            $('#addSubmit').unbind().on('click',function (e) {
+                                var name=$('#addAuth').find('input[name="name"]').val();
+                                var url=$('#addAuth').find('input[name="url"]').val();
+                                $.ajax({
+                                    url:'{:url("admin/api.OperationAuth/addAuth")}',
+                                    data: {name:name,url:url,parent:1,open:1},
+                                    type:'get',
+                                    dataType:'json',
+                                    error:function (xhr) {
+                                        layer.msg(xhr.status,{icon:2});
+                                    },
+                                    success: function (data) {
+                                        if (data.code==0){
+                                            window.location.reload();
+                                        }else{
+                                            layer.msg(data.msg,{icon:2});
+                                        }
+                                    }
+                                });
+
+                            });
+
+                        });
+                    }
+                    $menuRightObj=$.fn.zTree.init($("#menuTree"), setting, zNodes);
+                }else{
+                    layer.msg(data.msg,{icon:2});
+                }
+            }
+        });
+
+        function onCheck(event,treeId,treeNode) {
+            var treeObj = $.fn.zTree.getZTreeObj(treeId);
+            var nodes = $menuRightObj.getCheckedNodes(true);
+        }
+        var newCount = 1;
+        function addHoverDom(treeId, treeNode) {
+            var sObj = $("#" + treeNode.tId + "_span");
+            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+                + "' title='新增' onfocus='this.blur();'></span>";
+            sObj.after(addStr);
+            var btn = $("#addBtn_"+treeNode.tId);
+            if (btn) btn.on("click", function(){
+                var zTree = $.fn.zTree.getZTreeObj(treeId);
+                var x=$(window).offsetLeft;
+                $('#addAuth').find('input[name="name"]').val('');
+                $('#addAuth').find('input[name="url"]').val('');
+                $layIndex1=layer.open({
+                    type: 1,
+                    title: '',
+                    area: ['304px', '184px'], //宽高
+                    content: $('#addAuth')
+                });
+                $('#addSubmit').unbind().on('click',function (e) {
+                    var name=$('#addAuth').find('input[name="name"]').val();
+                    var url=$('#addAuth').find('input[name="url"]').val();
+                    var pid=treeNode.id;
+                    $.ajax({
+                        url:'{:url("admin/api.OperationAuth/addAuth")}',
+                        data: {name:name,url:url,pid:pid},
+                        type:'get',
+                        dataType:'json',
+                        error:function (xhr) {
+                            layer.msg(xhr.status,{icon:2});
+                        },
+                        success: function (data) {
+                            if (data.code==0){
+                                zTree.addNodes(treeNode, {id:data.data.id, pId:pid, name:name});
+                                layer.close($layIndex1);
+                            }else{
+                                layer.msg(data.msg,{icon:2});
+                            }
+                        }
+                    });
+
+                });
+
+                return false;
+            });
+        };
+        //鼠标一开节点
+        function removeHoverDom(treeId, treeNode) {
+            $("#addBtn_"+treeNode.tId).unbind().remove();
+        };
+
+        //删除节点
+        function zTreeBeforeRemove(treeId, treeNode) {
+            if (!confirm('是否删除该权限及子权限？')){
+                return false;
+            }else{
+                var layIndex2=layer.msg('加载中', {
+                    icon: 16
+                    ,shade: 0.01
+                });
+                var status=false;
+                $.ajax({
+                    url:'{:url("admin/api.OperationAuth/deleteAuth")}',
+                    data: {id:treeNode.id},
+                    type:'get',
+                    dataType:'json',
+                    async:false,//同步
+                    error:function (xhr) {
+                        layer.msg(xhr.status,{icon:2});
+                    },
+                    success: function (data) {
+                        if (data.code==0){
+                            status=true;
+                        }else{
+                            layer.msg(data.msg,{icon:2});
+                        }
+                    },
+                    complete:function () {
+                        layer.close(layIndex2);
+                    }
+                });
+                if (status){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        //编辑节点
+        function zTreeBeforeEditName(treeId, treeNode) {
+            $layIndex1=layer.open({
+                type: 1,
+                title: '',
+                area: ['304px', '184px'], //宽高
+                content: $('#editAuth')
+            });
+            var zTree = $.fn.zTree.getZTreeObj(treeId);
+            $('#editAuth').find('input[name="name"]').val(treeNode.name);
+            $('#editAuth').find('input[name="url"]').val(treeNode.url);
+            $('#editSubmit').unbind().on('click',function (e) {
+                var name=$('#editAuth').find('input[name="name"]').val();
+                var url=$('#editAuth').find('input[name="url"]').val();
+                var pid=treeNode.pid;
+                var id=treeNode.id;
+                $.ajax({
+                    url:'{:url("admin/api.OperationAuth/saveAuth")}',
+                    data: {id:id,name:name,url:url,pid:pid},
+                    type:'get',
+                    dataType:'json',
+                    error:function (xhr) {
+                        layer.msg(xhr.status,{icon:2});
+                    },
+                    success: function (data) {
+                        if (data.code==0){
+                            treeNode.name=name;
+                            treeNode.url=url;
+                            zTree.updateNode(treeNode);
+                            //zTree.reAsyncChildNodes(null, 'refresh', false);
+
+                            layer.close($layIndex1);
+                        }else{
+                            layer.msg(data.msg,{icon:2});
+                        }
+                    }
+                });
+
+            });
+            return false;
+        };
+
+        function filter(treeId, parentNode, responseData) {
+            if (responseData) {
+                responseData=responseData.data;
+            }
+            return responseData;
+        }
+        
+        function onDrop(event, treeId, treeNodes, targetNode, moveType) {
+
+        }
+    });
+
+</script>
+<div id="addAuth" class="hide">
+    <div style="padding: 20px 15px 0 0;" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">URL</label>
+            <div class="layui-input-inline">
+                <input type="text" name="url" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入URL" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <button id="addSubmit" class="layui-btn" lay-submit="" lay-filter="addSubmit">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editAuth" class="hide">
+    <div style="padding: 20px 15px 0 0;" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">URL</label>
+            <div class="layui-input-inline">
+                <input type="text" name="url" required="" lay-verify="required" lay-vertype="tips" placeholder="请输入URL" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <button id="editSubmit" class="layui-btn" lay-submit="" lay-filter="addSubmit">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

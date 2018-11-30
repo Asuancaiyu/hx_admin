@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>出错了！</title>
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="__JQUERY__"></script>
+    <script type="text/javascript" src="__LIB__/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="__LAYUI_JS__"></script>
+    <style>
+        .layui-fluid {
+            padding: 15px;
+        }
+        .layadmin-tips {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .layadmin-tips .layui-icon[face] {
+            display: inline-block;
+            font-size: 300px;
+            color: #393D49;
+        }
+        .layadmin-tips .layui-text {
+            width: 500px;
+            margin: 30px auto;
+            padding-top: 20px;
+            border-top: 5px solid #009688;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layadmin-tips">
+        <i class="layui-icon layui-icon-face-surprised" face=""></i>
+
+        <div class="layui-text" style="font-size: 20px;" id="errorContent">
+
+        </div>
+
+    </div>
+</div>
+<script>
+    //获取url中的参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return decodeURI(r[2]); return null; //返回参数值
+    }
+    var errorContent=document.getElementById('errorContent');
+    var msg=getUrlParam('msg');
+    errorContent.innerText = msg ? msg : '好像出错了呢!';
+</script>
+</body>
+</html>

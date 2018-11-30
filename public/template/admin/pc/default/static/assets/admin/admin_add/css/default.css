@@ -1,0 +1,103 @@
+.page{
+    margin: 10px;
+}
+#roleUl li{
+    margin-right: 10px;
+    margin-bottom: 10px;
+    height: 36px;
+    line-height: 36px;
+    border: 1px solid #cad8d7;
+    color: #009688;
+    min-width: 50px;
+    padding: 0 20px 0 10px;
+    float: left;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
+#roleUl .roleItem {
+    cursor: default;
+}
+#roleUl .roleItem .removeRole{
+    position: absolute;
+    right: 5px;
+    top: 0;
+    color: #f44336;
+    cursor: pointer;
+}
+#roleUl .roleItem .removeRole:hover{
+    color: #ff1100;
+}
+.justify{
+    text-align: justify;
+    text-justify:distribute-all-lines;
+}
+.layui-form-label{
+    height: 20px;
+}
+.justify:after {
+    width: 100%;
+    height: 0;
+    margin: 0;
+    display: inline-block;
+    overflow: hidden;
+    content: '';
+}
+#roleRightWindow.layui-tab-card{
+    box-shadow: none;
+}
+#roleRightWindow{
+    position: relative;
+    transition: all 0.2s;
+    height: 100%;
+}
+#roleRightWindow .layui-tab-title,
+#roleRightWindow .layui-tab-content{
+    transition: all 0.2s;
+}
+#roleRightWindow .layui-tab-content .layui-tab-item {
+    overflow-y: auto;
+    height: 100%;
+}
+#roleRightWindow .layui-layer-max {
+    background-position: -32px -40px;
+}
+#roleRightWindow .layui-layer-max:hover {
+    background-position: -16px -40px;
+}
+#roleRightWindow .layui-layer-maxmin {
+    background-position: -65px -40px;
+}
+#roleRightWindow .layui-layer-maxmin:hover {
+    background-position: -49px -40px;
+}
+#rightWindowBtn{
+    position: absolute;
+    right: 12px;
+    top: 15px;
+    height: 16px;
+    width: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.roleRightWindowMax{
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+    background: #fff;
+    z-index: 1;
+    margin-top: 0;
+}
+
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #0fa99b;
+    background-color: #0fa99b;
+    color: #fff;
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{block name="title"}标题{/block}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--[if IE]><meta http-equiv="x-ua-compatible" content="IE=9" /><![endif]-->
+    <meta name="author" content="SuggeElson" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="application-name" content="sprFlat admin template" />
+    <!-- 主要的css -->
+    <link href="__LAYUI_CSS__" rel="stylesheet" />
+    <link href="{$assets.css}" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    {block name="css"}{/block}
+    <!-- Fav and touch icons -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+</head>
+<body theme="coffee" class="layui-layout-body coffee">
+
+<div id="LAY_app" class="layadmin-tabspage-none">
+    <div class="layui-layout layui-layout-admin">
+    <!--头-->
+    {block name="header"}
+    {include file="layout/header" /}
+    {/block}
+
+    <!--左边栏-->
+    {block name="left"}
+    {include file="layout/left" /}
+    {/block}
+
+    <!--主体内容-->
+    {block name="content"}
+        {block name='page_title'}<h1 class="page-header"><i class="im-screen"></i> 页面标题</h1>{/block}
+
+        <div class="layadmin-pagetabs bb1" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+                <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                    <li class="layui-this" data-href="{:url('admin/center/welcome')}"><i class="layui-icon layui-icon-home"></i></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body" >
+            {block name="page"}{/block}
+
+            <div class="layadmin-tabsbody-item layui-show">
+                    <iframe src="{:url('admin/center/welcome')}" frameborder="0"></iframe>
+                <div class="loading"><i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop">&#xe63d;</i></div>
+            </div>
+        </div>
+
+    {/block}
+
+    <!--页脚-->
+    {block name="footer"}
+    {include file="layout/footer" /}
+    {/block}
+    </div>
+    <!-- 辅助元素，一般用于移动设备下遮罩 -->
+    <div class="layadmin-body-shade"></div>
+</div>
+
+<!--主题方案-->
+<div class="layui-layer layui-layer-page layui-anim-rl layui-layer-adminRight " id="themeArr" type="page"
+    showtime="0" contype="string" style="z-index: 19891021; width: 300px; top: 25.5px; left: unset ; right: -100%;opacity: 0">
+    <div id="LAY_adminPopupTheme" class="layui-layer-content">
+        <div class="layui-card-header"> 配色方案</div>
+        <div class="layui-card-body layadmin-setTheme">
+            <ul class="layadmin-setTheme-color">
+                <li class="setTheme" data-index="0" data-alias="default"  title="默认">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #20222A;">
+                        <div class="layadmin-setTheme-logo" style="background-color: undefined;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="1" data-alias="blue" title="蓝色">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #03152A;">
+                        <div class="layadmin-setTheme-logo" style="background-color: undefined;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="2" data-alias="coffee" title="咖啡">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #2E241B;">
+                        <div class="layadmin-setTheme-logo" style="background-color: undefined;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="3" data-alias="purple" title="紫色">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #50314F;">
+                        <div class="layadmin-setTheme-logo" style="background-color: undefined;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="4" data-alias="ocean" title="金典蓝">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #344058;">
+                        <div class="layadmin-setTheme-logo" style="background-color: #1E9FFF;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="5" data-alias="green" title="草绿">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #3A3D49;">
+                        <div class="layadmin-setTheme-logo" style="background-color: #2F9688;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="6" data-alias="yellow" title="黄色">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #20222A;">
+                        <div class="layadmin-setTheme-logo" style="background-color: #F78400;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="7" data-alias="red" title="红色">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #28333E;">
+                        <div class="layadmin-setTheme-logo" style="background-color: #AA3130;"></div>
+                    </div>
+                </li>
+                <li class="setTheme" data-index="8" data-alias="black" title="雅黑">
+                    <div class="layadmin-setTheme-header"></div>
+                    <div class="layadmin-setTheme-side" style="background-color: #24262F;">
+                        <div class="layadmin-setTheme-logo" style="background-color: #3A3D49;"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <span class="layui-layer-setwin"></span>
+    <span class="layui-layer-resize"></span>
+</div>
+
+<!--版权说明-->
+<div class="layui-layer layui-layer-page layui-anim layui-anim-rl layui-layer-adminRight" id="copyright" type="page"
+     times="5" showtime="0" contype="string" style="z-index: 19891021; width: 300px; top: 25px; left: unset;right: -100%;opacity: 0; ">
+    <div id="LAY_adminPopupAbout" class="layui-layer-content">
+
+        <div class="layui-card-header">关于新疆神木药业股份有限公司</div>
+        <div class="layui-card-body layui-text layadmin-about">
+            <blockquote class="layui-elem-quote" style="border: none;">
+               新疆神木药业股份有限公司，新疆神木药品零售连锁有限责任公司，系一体化经营、共同使用神木品牌；分别具有集药品批发、零售连锁加盟及互联网B2B批发和B2C零售资质的现代化医药企业。
+            </blockquote>
+            <blockquote class="layui-elem-quote" style="border: none;">
+                库房总计营业面积达22000多平方米，送货车辆100余辆，服务团队280余人。经营药品品种及品规达10000余个，涉及中药材、中药饮片、中成药、化学药制剂、抗生素、生化药品、生物制品、医疗器械、保健食品等。配送服务设有南北疆两个配送中心，配送半径覆盖全疆各地州，力争成为新疆最大的药品配送专业集成服务商。
+            </blockquote>
+
+            <p>© 2018 <a href="http://www.xjsmyy.com" target="__black">新疆神木药业股份有限公司</a> 版权所有</p>
+        </div>
+    </div>
+    <span class="layui-layer-setwin"></span><span class="layui-layer-resize"></span>
+</div>
+
+
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__/layui.all.js"></script>
+<script src="{$assets.js}"></script>
+
+{block name="js"}{/block}
+</body>
+</html>
+

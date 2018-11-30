@@ -1,0 +1,27 @@
+.page{
+    margin: 10px;
+}
+.justify{
+    text-align: justify;
+    text-justify:distribute-all-lines;
+}
+.layui-form-label{
+    height: 20px;
+}
+.justify:after {
+    width: 100%;
+    height: 0;
+    margin: 0;
+    display: inline-block;
+    overflow: hidden;
+    content: '';
+}
+.layui-form-select dl dd.layui-this {
+    background-color: #009688;
+    color: #fff;
+}
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #0fa99b;
+    background-color: #0fa99b;
+    color: #fff;
+}

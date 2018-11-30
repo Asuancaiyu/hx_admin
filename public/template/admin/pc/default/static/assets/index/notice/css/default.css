@@ -1,0 +1,26 @@
+
+html {
+    background-color: #F2F2F2;
+}
+html body {
+    margin-top: 61px;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+body {
+    line-height: 24px;
+    font: 14px Helvetica Neue,Helvetica,PingFang SC,\5FAE\8F6F\96C5\9ED1,Tahoma,Arial,sans-serif;
+}
+.hx-none{ text-align: center; padding-top:50px; color: #999;}
+.hx-none .layui-icon{line-height: 326px; font-size: 300px; color: #393D49;}
+.hx-none .icon-tishilian{display: inline-block; margin: 30px 0 20px;}
+.hx-none p{margin-top: 50px; padding: 0 15px; font-size: 20px; color: #999; font-weight: 300;}
+.hx-list-one .hx-none{min-height: 70px;}
+
+.notice{width: 600px; margin: 30px auto; padding: 30px 15px; border-top: 5px solid #009688; line-height: 30px;  text-align: center; font-size: 16px; font-weight: 300; background-color: #f2f2f2;}
+@media screen and (max-width: 750px) {
+    html body{margin-top: 0;}
+    .notice{width: auto; margin: 20px 15px; padding: 30px 0;}
+}

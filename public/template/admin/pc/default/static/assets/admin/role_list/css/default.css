@@ -1,0 +1,173 @@
+body{
+    margin: 15px;
+}
+
+.hide{
+    display: none;
+}
+.layui-btn-group .layui-btn{
+    margin-bottom: 0;
+}
+.bb1 {
+    border-bottom: 1px solid #eee;
+}
+.bt1 {
+    border-top: 1px solid #eee;
+}
+#searchCard form{
+    margin: 12px 0 0 0;
+}
+#filterBtn i{
+    position: relative;top: 2px;
+}
+
+.form-item{
+    width: 180px;
+    float: left;
+    margin-right: 12px;
+    padding-bottom: 12px;
+}
+.form-item:last-child{
+    margin-right: 0;
+}
+
+.mr10{
+    margin-right: 10px;
+}
+.ml10{
+    margin-left: 10px;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.color-green{
+    color: #009688;
+}
+.color-green:hover{
+    color: #007368;
+}
+.layui-form-onswitch{
+    border-color: #009688;
+    background-color: #009688;
+}
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #009688;
+    background-color: #009688;
+    color: #fff;
+}
+.layui-card-header-auto{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    height: auto;
+}
+
+#roleAddWindow{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background-color: rgba(0,0,0,.6);
+}
+#roleAddWindow .roleAddContainer{
+    position: absolute;
+    width: 500px;
+    height: 390px;
+    padding: 20px 20px 20px 5px;
+    background: #fff;
+    box-shadow: 0 2px 8px #666;
+    top: 50%;
+    left: 50%;
+    margin-top: -195px;
+    margin-left: -250px;
+    border-radius: 4px;
+}
+#roleAddWindow .layui-form-label{
+    text-align: justify;
+    height: 20px;
+    overflow: hidden;
+}
+#roleAddWindow .layui-form-label:after{
+    content: " ";
+    display: inline-block;
+    width: 100%;
+}
+#roleAddWindow .layui-tab-card{
+    box-shadow: none;
+}
+#closeRoleWindow{
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 16px;
+    right: -25px;
+    top: -25px;
+    background: #fff;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #999;
+}
+#closeRoleWindow i{
+    font-weight: bold;
+}
+#closeRoleWindow:hover{
+    background: #FF5722;
+    color: #fff;
+}
+#roleRightWindow{
+    position: relative;
+    transition: all 0.2s;
+    height: 100%;
+}
+#roleRightWindow .layui-tab-title,
+#roleRightWindow .layui-tab-content{
+    transition: all 0.2s;
+}
+#roleRightWindow .layui-tab-content .layui-tab-item {
+    overflow-y: auto;
+    height: 100%;
+}
+#roleRightWindow .layui-layer-max {
+    background-position: -32px -40px;
+}
+#roleRightWindow .layui-layer-max:hover {
+    background-position: -16px -40px;
+}
+#roleRightWindow .layui-layer-maxmin {
+    background-position: -65px -40px;
+}
+#roleRightWindow .layui-layer-maxmin:hover {
+    background-position: -49px -40px;
+}
+#rightWindowBtn{
+    position: absolute;
+    right: 12px;
+    top: 15px;
+    height: 16px;
+    width: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.roleRightWindowMax{
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+    background: #fff;
+    z-index: 1;
+    margin-top: 0;
+}
+
+

@@ -1,0 +1,16 @@
+html,body{
+    height: 100%;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    background: #fff;
+
+}
+.hide{
+    display: none;
+}
+.page{
+    height: 100%;
+}

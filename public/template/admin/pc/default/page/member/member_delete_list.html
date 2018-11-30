@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 主要的css -->
+    <link href="__LAYUI__css/layui.css" rel="stylesheet" />
+    <!--浏览器滚动条样式-->
+    <link rel="stylesheet" href="__COMMON__assets/css/scrollbar.css">
+    <link href="{$assets.css}" rel="stylesheet" />
+    <title>已删除管理员列表</title>
+</head>
+<body>
+<div class="page bt">
+    <div class="layui-card">
+        <div class="layui-card-header layui-card-header-auto">
+            <button class="layui-btn" id="filterBtn" ><span>数据筛选</span> <i class="layui-icon layui-icon-down"></i></button>
+        </div>
+        <div id="searchCard" class="hide bb1">
+            <div class="layui-card-body">
+                <div class="">
+                    <form class="layui-form" action="">
+                        <!--<div class="form-item">
+                            <input type="text" name="username" placeholder="用户名" autocomplete="off" class="layui-input">
+                        </div>-->
+                        <div class="form-item">
+                            <input type="text" name="phone"  placeholder="手机号" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="form-item">
+                            <input type="text" name="realname" placeholder="姓名" autocomplete="off" class="layui-input">
+                        </div>
+
+                        <div class="form-item">
+                            <button class="layui-btn" id="subSearch" lay-submit lay-filter="formDemo">查 询</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-btn-container" id="tabCtn" lay-ilter="tabCtn">
+                <table id="table1" lay-filter="table1"></table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--个人信息弹窗-->
+<div id="userInfoCtn" class="hide">
+    <div class="windowCtn">
+        <div class="closeBtn"><i class="layui-icon layui-icon-close"></i></div>
+    </div>
+    <div class="contentCtn">
+        <div class="infoHeader">
+            <div class="avatarCtn"><img class="cAvatar" src="{$assets.img}avatar_default.JPG" alt=""></div>
+            <div class="editBtn"><i class="layui-icon layui-icon-edit"></i></div>
+        </div>
+        <div class="infoBody">
+            <p class="cRealname"></p>
+            <dl>
+                <dd><span class="title">账号</span><span class="cUsername"></span></dd>
+                <dd><span class="title">昵称</span><span class="cNickname"></span></dd>
+                <dd><span class="title">手机</span><span class="cPhone"></span></dd>
+                <dd><span class="title">邮箱</span><span class="cEmail"></span></dd>
+                <dd><span class="title">其他</span></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<!--头工具栏事件-->
+<script type="text/html" id="dataTool">
+    <!--<div class="layui-inline" lay-event="update"><i class="layui-icon layui-icon-edit"></i></div>-->
+    <div class="layui-inline" lay-event="delete"  title="删除选中用户"><i class="layui-icon layui-icon-delete"></i></div>
+</script>
+<!--监听行工具事件-->
+<script type="text/html" id="barDemo">
+    <a class="cursor-pointer color-green mr10" lay-event="restore"><i class="layui-icon layui-icon-refresh-1"></i>恢复</a>
+    <a class="cursor-pointer color-green" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+</script>
+
+<script src="__JQUERY__"></script>
+<script src="__LAYUI__layui.js"></script>
+<script>
+    var getMemberListUrl='{:url("admin/api.member/getMemberList")}';
+    var doDeleteMemberUrl='{:url("admin/api.member/deleteMember")}';
+
+    var restoreDeleteMemberURL='{:url("admin/api.member/restoreDeleteMember")}';
+
+</script>
+<script src="{$assets.js}"></script>
+</body>
+</html>
