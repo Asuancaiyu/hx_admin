@@ -1,8 +1,17 @@
 {
     "name": "hxwljs/admin",
     "description": "a admin",
+    "homepage": "https://github.com/Asuancaiyu/hx_admin",
+    "authors": [
+        {
+            "name": "SuanCaiYu",
+            "email": "tangchenxi16@gmail.com",
+            "homepage": "http://ihx.inc",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "php": "^7.0 || ^7.3",
+        "php": ">=7.0",
         "another-vendor/package": "1.*"
     }
 }
