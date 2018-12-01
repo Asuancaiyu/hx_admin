@@ -2,6 +2,7 @@
     "name": "hxwljs/admin",
     "description": "a admin",
     "homepage": "https://github.com/Asuancaiyu/hx_admin",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "SuanCaiYu",
@@ -12,6 +13,13 @@
     ],
     "require": {
         "php": ">=7.0",
-        "another-vendor/package": "1.*"
+        "topthink/framework": "5.1.*",
+        "zz-studio/think-addons": "^1.0",
+        "topthink/think-captcha": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "application"
+        }
     }
 }
