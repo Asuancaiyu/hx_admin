@@ -20,7 +20,7 @@
     'bg'    => false,
      // 背景颜色
 
-    'fontttf'  => 'sm2.ttf',
+    'fontttf'  => 'maobi2.ttf',
      //字体
      'expire'   =>'1800'
     // 验证码字体，不设置随机获取
