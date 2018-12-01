@@ -12,10 +12,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "topthink/framework": "5.1.*",
-        "zz-studio/think-addons": "^1.0",
-        "topthink/think-captcha": "^2.0"
+        "php": ">=7.0"
     },
     "autoload": {
         "psr-4": {
