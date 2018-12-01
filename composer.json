@@ -17,6 +17,7 @@
         "zz-studio/think-addons": "^1.0",
         "topthink/think-captcha": "^2.0"
     },*/
+
     "autoload": {
         "psr-4": {
             "app\\": "application"
