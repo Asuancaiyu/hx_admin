@@ -1,5 +1,5 @@
 {
-    "name": "hx/admin",
+    "name": "hxwljs/admin",
     "description": "a admin",
     "require": {
         "php": "^7.0 || ^7.3",
