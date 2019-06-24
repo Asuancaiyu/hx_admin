@@ -203,7 +203,7 @@ class Captcha
                 $code[$i] = $this->codeSet[mt_rand(0, strlen($this->codeSet) - 1)];
                 $codeNX += mt_rand($this->fontSize * 1.2, $this->fontSize * 1.6);
                 //默认x坐标为 * 1.6
-                imagettftext($this->im, $this->fontSize, mt_rand(-40, 40), $codeNX, $this->fontSize * 2.0, $this->color, $this->fontttf, $code[$i]);
+                imagettftext($this->im, $this->fontSize, mt_rand(-10,10), $codeNX, $this->fontSize * 2.0, $this->color, $this->fontttf, $code[$i]);
             }
         }
 
