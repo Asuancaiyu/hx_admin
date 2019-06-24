@@ -60,8 +60,9 @@
 </div>
 <script type="text/javascript">
     //提交地址
-    var submitUrl = '';
-
+    var submitUrl = "{:url('admin/api.Login/username')}";
+    var url='{$url ?? ""}';
+    var adminCtenterURL='{:url("admin/center/index")}';
     $(".memory_user .checkbox").click(function () {
         if ($(this).prop("checked") == true) {
             $(this).parent('.memory_user').addClass("checked");
@@ -97,10 +98,17 @@
             url: submitUrl,
             type: 'post',
             dataType: 'json',
-            data: {username: username, password: password, vertify: vertify},
+            data: {username: username, password: password, code: vertify},
             success: function (res) {
-                if (res.status == 1) {
-                    top.location.href = res.url;
+                if (res.code == 0) {
+                    if (typeof res.data.url == "undefined"){
+                        if (!url){
+                            url=adminCtenterURL;
+                        }
+                        top.location.href = url;
+                    }else {
+                        top.location.href = res.data.url;
+                    }
                 } else {
                     alert(res.msg);
                     fleshVerify();//重新获取验证码
