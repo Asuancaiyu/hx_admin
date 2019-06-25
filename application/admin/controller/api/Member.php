@@ -9,7 +9,7 @@
 namespace app\admin\controller\api;
 
 
-use app\admin\controller\Base;
+use app\admin\Base;
 use app\common\logic\member\MemberGroupLogic;
 use app\common\logic\member\MemberLogic;
 use app\common\logic\member\MemberTagLogic;

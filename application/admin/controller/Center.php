@@ -8,7 +8,7 @@
 
 namespace app\admin\controller;
 
-
+use app\admin\Base;
 class Center extends Base
 {
     /**

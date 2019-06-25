@@ -9,10 +9,10 @@
 namespace app\admin\controller;
 
 
-use app\Base;
+use app\admin\Common;
 use app\common\logic\admin\AdminLogin;
 
-class Index extends Base
+class Index extends Common
 {
 
     /**

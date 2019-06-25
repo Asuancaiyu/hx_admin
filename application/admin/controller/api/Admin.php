@@ -9,7 +9,7 @@
 namespace app\admin\controller\api;
 
 
-use app\admin\controller\Base;
+use app\admin\Base;
 
 class Admin extends Base
 {

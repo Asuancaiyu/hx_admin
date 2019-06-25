@@ -9,7 +9,7 @@
 namespace app\admin\controller\api;
 
 
-use app\admin\controller\Base;
+use app\admin\Base;
 use app\common\logic\admin\GroupLogic;
 
 class AdminGroup extends Base

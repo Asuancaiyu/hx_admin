@@ -6,7 +6,7 @@
  * Time: 15:53
  */
 
-namespace app\admin\controller;
+namespace app\admin;
 
 
 use app\common\logic\admin\AdminLogin;

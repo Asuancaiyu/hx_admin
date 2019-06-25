@@ -1,0 +1,23 @@
+<!-- 侧边菜单 -->
+<div class="layui-side layui-side-menu">
+    <div class="layui-side-scroll">
+        <div class="layui-logo" lay-href="">
+            <span>神 木 药 业</span>
+        </div>
+        <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+            lay-filter="layadmin-system-side-menu">
+            <li data-name="" data-jump="" class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:;" lay-tips="主页" lay-direction="2"> <i class="layui-icon layui-icon-home"></i> <cite>主页</cite> <span class="layui-nav-more"></span></a>
+                <dl class="layui-nav-child">
+                    <dd data-name="" class="layui-this"><a href="javascript:;" class="menu-item" data-href="{:url('admin/inspection/inspection_list')}">首页</a></dd>
+                    <dd data-name="" class=""><a href="javascript:;" class="menu-item" data-href="http://www.baidu.com">百度</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layui-this">
+                <a href="javascript:;" class="menu-item" data-href="{:url('admin/index/welcome')}" lay-direction="2"> <i class="layui-icon layui-icon-home"></i> <cite>主页</cite> </a>
+            </li>
+
+
+            <span class="layui-nav-bar"></span></ul>
+    </div>
+</div>

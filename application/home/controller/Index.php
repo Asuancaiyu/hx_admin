@@ -8,13 +8,17 @@
 
 namespace app\home\controller;
 
+use app\home\Common;
 
-use app\Base;
-
-class Index extends Base
+class Index extends Common
 {
     public function index()
     {
         return $this->fetch();
+    }
+
+    public function db(){
+        echo 2;
+        exit;
     }
 }

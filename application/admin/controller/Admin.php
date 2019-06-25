@@ -9,8 +9,7 @@
 namespace app\admin\controller;
 
 
-use app\common\logic\admin\RoleLogic;
-
+use app\admin\Base;
 class Admin extends Base
 {
     /**

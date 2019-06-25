@@ -7,7 +7,7 @@
  */
 namespace app\admin\controller\api;
 
-use app\admin\controller\Common;
+use app\admin\Common;
 use app\common\logic\admin\AdminLogin;
 use think\App;
 
